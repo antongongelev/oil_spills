@@ -5,15 +5,23 @@ import java.io.IOException;
 import java.util.function.UnaryOperator;
 
 public class Main {
+    /**
+     * Кол-во эпох обучения
+     */
+    private static final int EPOCH = 40;
 
     public static void main(String[] args) {
         oil();
     }
 
+    /**
+     * Обучение нейросети с дальнейшим запуском приложения. Сканируются файлы с изображениями размеров 100*100 пикселей
+     * из папок spills и noSpills. Можно также добавлять тестовые данные, что повысит точность определения после обучения
+     */
     private static void oil() {
         UnaryOperator<Double> sigmoid = x -> 1 / (1 + Math.exp(-x));
         UnaryOperator<Double> dsigmoid = y -> y * (1 - y);
-        NeuralNetwork nn = new NeuralNetwork(0.001, sigmoid, dsigmoid, 10000, 5000, 3000, 2000, 1000, 500, 100, 2);
+        NeuralNetwork nn = new NeuralNetwork(0.001, sigmoid, dsigmoid, 10000, 4000, 1000, 100, 2);
 
 
         File[] spillFiles = new File("oil/src/main/resources/spills").listFiles();
@@ -49,8 +57,7 @@ public class Main {
             }
         }
 
-        int epochs = 10;
-        for (int i = 1; i < epochs; i++) {
+        for (int i = 1; i < EPOCH; i++) {
             int right = 0;
             double errorSum = 0;
             int batchSize = 100;

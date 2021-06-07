@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class FormOil extends JFrame implements ActionListener {
 
@@ -20,6 +21,7 @@ public class FormOil extends JFrame implements ActionListener {
     private JFrame frame;
     private BufferedImage image;
     private NeuralNetwork network;
+
 
     public FormOil(NeuralNetwork network) throws HeadlessException {
         this.network = network;
@@ -30,6 +32,40 @@ public class FormOil extends JFrame implements ActionListener {
         this.add(button);
         this.pack();
         this.setVisible(true);
+
+
+        real();
+//        test();
+    }
+
+    /**
+     * Метод для реальной работы - позволяет открыть изображение
+     * из файла и определить, если на фото разлив нефти или нет
+     * !!!ВАЖНО!!! размер изображения - 100*100 пикселей
+     */
+    private void real() {
+        // вызывается нажатием на кнопку
+    }
+
+    /**
+     * Метод для тестирования - после обучения каждые 3 секунды открывает
+     * одну из картинок в случайной папке С или БЕЗ разива и определяет рез-т
+     */
+    private void test() {
+        Random random = new Random();
+
+        while (true) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String isSpill = random.nextBoolean() ? "spills" : "noSpills";
+            File[] files = new File("oil/src/main/resources/" + isSpill).listFiles();
+
+            int index = (int) (Math.random() * files.length);
+            openAndRecognise(files[index].getAbsolutePath());
+        }
     }
 
     @Override
